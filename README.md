@@ -1,1 +1,1 @@
-# cni-test
+# simple-k8s-cni
