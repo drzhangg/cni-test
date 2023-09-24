@@ -32,7 +32,7 @@ type SubnetConf struct {
 
 const (
 	DefaultSubnetFile = "/run/mycni/subnet.json"
-	DefaultBridgeName = "cni0"
+	DefaultBridgeName = "cni01"
 )
 
 func LoadSubnetConfig() (*SubnetConf, error) {

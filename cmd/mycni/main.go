@@ -47,7 +47,7 @@ func cmdAdd(args *skel.CmdArgs) error {
 		return err
 	}
 
-	mtu := 1500
+	mtu := 1501
 	br, err := bridge.CreateBridge(conf.Bridge, mtu, ipam.IPNet(gateway))
 	if err != nil {
 		return err
