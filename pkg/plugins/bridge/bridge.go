@@ -134,7 +134,7 @@ func CreateVethPair(ifName string, mtu int, hostName ...string) (*netlink.Veth, 
 	return veth1.(*netlink.Veth), veth2.(*netlink.Veth), nil
 }
 
-func SetupVeth(netns ns.NetNS, br netlink.Link, mtu int, ifName, vethPairName string, podIP *net.IPNet, gateway net.IP) error {
+func SetupVeth(netns ns.NetNS, br netlink.Link, mtu int, ifName string, podIP *net.IPNet, gateway net.IP) error {
 	hostIface := &types100.Interface{}
 	err := netns.Do(func(hostNS ns.NetNS) error {
 		//在容器网络空间创建虚拟网卡,一端在容器内，一端在主机上
@@ -216,5 +216,18 @@ func CheckVeth(netns ns.NetNS, ifName string, ip net.IP) error {
 		}
 
 		return fmt.Errorf("failed to find ip %s for %s", ip, ifName)
+	})
+}
+
+func DelVeth(netns ns.NetNS, ifName string) error {
+	return netns.Do(func(ns.NetNS) error {
+		l, err := netlink.LinkByName(ifName)
+		if os.IsNotExist(err) {
+			return nil
+		}
+		if err != nil {
+			return err
+		}
+		return netlink.LinkDel(l)
 	})
 }
